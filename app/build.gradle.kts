@@ -51,4 +51,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation("com.microsoft.onnxruntime:onnxruntime-android:1.19.2")
+    implementation("org.smali:dexlib2:2.5.2")
+
 }
