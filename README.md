@@ -1,39 +1,29 @@
-Mobile Security
+# Mobile Security
 
 An Android application that analyzes installed applications for
 potential security risks using static APK analysis and an on-device
 machine learning model.
 
-Features
+## Features
 
-Scan installed applications
+-   Scan installed applications
+-   View application details and requested permissions
+-   Count potentially dangerous permissions
+-   Calculate a static risk score
+-   Extract features from APK/DEX files
+-   Analyze applications using an ONNX machine learning model
+-   Display benign/malicious classification and confidence
+-   Display benign and malicious probabilities
+-   Show the number of active AI features
+-   Rescan an individual application
+-   Display a final security verdict combining static analysis and AI
+    analysis
 
-View application details and requested permissions
-
-Count potentially dangerous permissions
-
-Calculate a static risk score
-
-Extract features from APK/DEX files
-
-Analyze applications using an ONNX machine learning model
-
-Display benign/malicious classification and confidence
-
-Display benign and malicious probabilities
-
-Show the number of active AI features
-
-Rescan an individual application
-
-Display a final security verdict combining static analysis and AI
-analysis
-
-How It Works
+## How It Works
 
 The application uses two layers of analysis.
 
-Static Analysis
+### Static Analysis
 
 The scanner examines application permissions and assigns a risk score
 based on potentially sensitive capabilities such as SMS, phone state,
@@ -42,15 +32,12 @@ completion, package visibility, and usage statistics.
 
 Risk levels include:
 
-SAFE
+-   SAFE
+-   LOW RISK
+-   SUSPICIOUS
+-   HIGH RISK
 
-LOW RISK
-
-SUSPICIOUS
-
-HIGH RISK
-
-AI Analysis
+### AI Analysis
 
 The application extracts exactly 50 features from the target APK/DEX
 files.
@@ -62,43 +49,41 @@ The feature vector is passed to an ONNX Random Forest model.
 
 The model returns:
 
-Benign probability
-
-Malicious probability
-
-Classification
-
-Confidence
+-   Benign probability
+-   Malicious probability
+-   Classification
+-   Confidence
 
 The Android ONNX implementation was validated against the original
 scikit-learn model with 100% prediction agreement on the validation
 dataset.
 
-Machine Learning Model
+## Machine Learning Model
 
 The model was trained using a small Drebin-based dataset.
 
 Dataset distribution:
 
-Class             Samples
-
-Benign (B)          9,476
-Malicious (S)       5,560
-Total              15,036
+  Class             Samples
+  --------------- ---------
+  Benign (B)          9,476
+  Malicious (S)       5,560
+  Total              15,036
 
 The Android application uses the exported ONNX version of the model.
 
-AI Features
+## AI Features
 
 The model expects exactly 50 features.
 
 The Android extractor validates the generated feature vector before
 inference and reports the number of active features, for example:
 
-37 / 50 active features
+`37 / 50 active features`
 
-Architecture
+## Architecture
 
+``` text
 Android App
 │
 ├── UI
@@ -117,36 +102,40 @@ Android App
 │   └── ONNX Model
 │
 └── Security Analysis
-├── Permission Analysis
-├── Static Risk Score
-└── AI Classification
+    ├── Permission Analysis
+    ├── Static Risk Score
+    └── AI Classification
+```
 
-App Analysis Flow
+## App Analysis Flow
 
+``` text
 Select installed application
-↓
+        ↓
 Read application information
-↓
+        ↓
 Read requested permissions
-↓
+        ↓
 Calculate static risk
-↓
+        ↓
 Locate APK
-↓
+        ↓
 Extract DEX features
-↓
+        ↓
 Generate 50-feature vector
-↓
+        ↓
 Validate feature count
-↓
+        ↓
 Run ONNX model
-↓
+        ↓
 Display AI result
-↓
+        ↓
 Display final security verdict
+```
 
-Project Structure
+## Project Structure
 
+``` text
 app/
 ├── src/
 │   └── main/
@@ -160,36 +149,30 @@ app/
 │
 ├── build.gradle.kts
 └── ...
+```
 
-Requirements
+## Requirements
 
-Android Studio
+-   Android Studio
+-   Android SDK
+-   Kotlin
+-   Android device or emulator
+-   ONNX Runtime dependency
 
-Android SDK
+## Running the Project
 
-Kotlin
+1.  Clone the repository.
+2.  Open the project in Android Studio.
+3.  Allow Gradle to synchronize.
+4.  Connect an Android device or start an emulator.
+5.  Build and run the application.
 
-Android device or emulator
-
-ONNX Runtime dependency
-
-Running the Project
-
-Clone the repository.
-
-Open the project in Android Studio.
-
-Allow Gradle to synchronize.
-
-Connect an Android device or start an emulator.
-
-Build and run the application.
-
-Validation
+## Validation
 
 The ONNX model was compared against the original scikit-learn Random
 Forest model.
 
+``` text
 Sklearn shape: (15036, 2)
 ONNX shape:    (15036, 2)
 
@@ -201,35 +184,26 @@ Mean probability difference:
 
 Prediction agreement:
 100.0000%
+```
 
 This confirms that the ONNX model produces effectively the same
 predictions as the original scikit-learn model for the validation set.
 
-Current Status
+## Current Status
 
-Installed application scanning
+-   [x] Installed application scanning
+-   [x] Permission analysis
+-   [x] Static risk scoring
+-   [x] APK/DEX feature extraction
+-   [x] 50-feature validation
+-   [x] ONNX inference
+-   [x] AI confidence and probabilities
+-   [x] Individual application analysis
+-   [x] Rescan functionality
+-   [x] Active feature count
+-   [x] App details security UI
 
-Permission analysis
-
-Static risk scoring
-
-APK/DEX feature extraction
-
-50-feature validation
-
-ONNX inference
-
-AI confidence and probabilities
-
-Individual application analysis
-
-Rescan functionality
-
-Active feature count
-
-App details security UI
-
-Important Notes
+## Important Notes
 
 This is a small academic/project security scanner, not a replacement for
 a full mobile antivirus or malware analysis platform.
@@ -241,7 +215,7 @@ than definitive proof that an application is malicious or safe.
 Popular applications can legitimately contain many permissions and API
 features that may also occur in malware datasets.
 
-Disclaimer
+## Disclaimer
 
 This project is for educational and research purposes. Security
 classifications are based on static indicators and a machine learning
